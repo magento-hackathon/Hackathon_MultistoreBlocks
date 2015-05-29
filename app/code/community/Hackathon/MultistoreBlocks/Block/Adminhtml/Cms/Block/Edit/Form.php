@@ -91,7 +91,6 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form extends Mag
 		$this->setTab($model, $tabbedFieldset);
 		
 		$siblingBlocks = $model->getSiblingBlocks();
-        if(!$siblingBlocks) $siblingBlocks = array();
 
 		foreach($siblingBlocks as $block){
             $this->setTab($block, $tabbedFieldset);
@@ -113,8 +112,8 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form extends Mag
             $block_id = $block->getId();
         }
         
-        $field =$fieldset->addField('store_id['.$block_id.']', 'multiselect', array(
-            'name'      => 'stores['.$block_id.'][]',
+        $field =$fieldset->addField('multistore_store_id['.$block_id.']', 'multiselect', array(
+            'name'      => 'multistore_stores['.$block_id.'][]',
             'label'     => Mage::helper('cms')->__('Store View'),
             'title'     => Mage::helper('cms')->__('Store View'),
             'required'  => true,
@@ -130,10 +129,10 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form extends Mag
         $renderer = $this->getLayout()->createBlock('adminhtml/store_switcher_form_renderer_fieldset_element');
         $field->setRenderer($renderer);
     
-        $fieldset->addField('is_active['.$block_id.']', 'select', array(
+        $fieldset->addField('multistore_is_active['.$block_id.']', 'select', array(
             'label'     => Mage::helper('cms')->__('Status'),
             'title'     => Mage::helper('cms')->__('Status'),
-            'name'      => 'is_active['.$block_id.']',
+            'name'      => 'multistore_is_active['.$block_id.']',
             'required'  => true,
             'options'   => array(
                 '1' => Mage::helper('cms')->__('Enabled'),
@@ -143,8 +142,8 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form extends Mag
         ));
 
 
-        $fieldset->addField('content['.$block_id.']', 'editor', array(
-            'name'      => 'content['.$block_id.']',
+        $fieldset->addField('multistore_content['.$block_id.']', 'editor', array(
+            'name'      => 'multistore_content['.$block_id.']',
             'label'     => Mage::helper('cms')->__('Content'),
             'title'     => Mage::helper('cms')->__('Content'),
             'style'     => 'height:36em',
