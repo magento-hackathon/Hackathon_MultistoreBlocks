@@ -11,11 +11,25 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Grid extends Mage_Adm
 {
 
     /**
+     * Get helper
+     *
+     * @return Hackathon_MultistoreBlocks_Helper_Data
+     */
+    protected function _getHelper()
+    {
+        return Mage::helper('hackathon_multistoreblocks');
+    }
+
+    /**
      * Prepare collection and group by
      * @return $this
      */
     protected function _prepareCollection()
     {
+        if (!$this->_getHelper()->isEnabled()) {
+            return parent::_prepareCollection();
+        }
+
         $collection = Mage::getModel('cms/block')->getCollection();
         /** @var $collection Mage_Cms_Model_Resource_Block_Collection */
 
@@ -34,6 +48,10 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Grid extends Mage_Adm
      */
     protected function _afterLoadCollection()
     {
+        if (!$this->_getHelper()->isEnabled()) {
+            return parent::_afterLoadCollection();
+        }
+
         $collection = $this->getCollection();
         /** @var $collection Mage_Cms_Model_Resource_Block_Collection */
 
@@ -56,6 +74,42 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Grid extends Mage_Adm
             $cmsBlock->setStoreId($storeIds)
                 ->setStores($storeIds);
         }
+
+        return $this;
+    }
+
+    /**
+     * Remove status column
+     *
+     * @return $this
+     */
+    protected function _prepareColumns()
+    {
+        if (!$this->_getHelper()->isEnabled()) {
+            return parent::_prepareColumns();
+        }
+
+        parent::_prepareColumns();
+
+        // Removed is_active
+        $this->removeColumn('is_active')
+            ->removeColumn('store_id');
+
+        // Readd stores
+        $this->addColumnAfter('store_id', array(
+            'header'        => Mage::helper('cms')->__('Store View'),
+            'index'         => 'store_id',
+            'type'          => 'store',
+            'store_all'     => true,
+            'store_view'    => true,
+            'sortable'      => false,
+            'renderer'      => 'Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Grid_Renderer_Store',
+            'filter_condition_callback'
+                => array($this, '_filterStoreCondition'),
+        ), 'identifier');
+
+        // Fix order
+        $this->sortColumnsByOrder();
 
         return $this;
     }
