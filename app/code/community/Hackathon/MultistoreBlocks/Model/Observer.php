@@ -16,16 +16,39 @@ class Hackathon_MultistoreBlocks_Model_Observer
         Mage::register('before_save_cms_block_prevent_loop', true);
 
         $block = $observer->getEvent()->getDataObject();
-        Zend_Debug::dump($block);exit;
 
-        foreach($block->getContent() as $key=>$content)
+        foreach($block->getMultistoreContent() as $key=>$content)
         {
-            $status = $block->getStatus()[$key]; // upgrade to 5.5 instead of changing this, lazy bastard
-            $storeIds = $block->getStoreId()[$key];
-            $existingId = $block->getMultistoreBlockId[$key];
+            $isActive = $block->getMultistoreIsActive()[$key]; // upgrade to 5.5 instead of changing this, lazy bastard
+            $stores = $block->getMultistoreStores()[$key];
+            $existingId = $block->getMultistoreBlockId()[$key];
 
+            $_block = Mage::getModel('cms/block');
+            if($existingId) {
+                $_block = $_block->load($existingId);
+            } else {
+                $existingId = null;
+            }
 
+            $_block->addData(array(
+                'title' => $block->getTitle(),
+                'identifier' => $block->getIdentifier(),
+                'is_active' => $isActive,
+                'stores' => $stores,
+                'content' => $content
+            ));
+
+            try {
+		        $_block->save();
+		        //Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('hackathon_multistoreblocks')->__('Block %s is saved.', $_block->getId()));
+            } catch(Exception $e) {
+                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+            }
         }
+
+        // Make sure the normal method also saves something instead of creating a new one
+        $block->setData($_block->getData());
+
     }
 
     public function loadAfterCmsBlock($observer)
