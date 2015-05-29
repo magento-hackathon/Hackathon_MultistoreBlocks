@@ -3,9 +3,15 @@
 class Hackathon_MultistoreBlocks_Model_Observer
 {
 
+    /**
+     * Save multistore block content
+     *
+     * @param $observer
+     */
     public function beforeSaveCmsBlock($observer)
     {
         if(!Mage::helper('hackathon_multistoreblocks')->isEnabled()) {
+            // Not enabled
             return;
         }
 
@@ -16,6 +22,12 @@ class Hackathon_MultistoreBlocks_Model_Observer
         Mage::register('before_save_cms_block_prevent_loop', true);
 
         $block = $observer->getEvent()->getDataObject();
+
+        $multistoreContent = $block->getMultistoreContent();
+        if (!$multistoreContent || !is_array($multistoreContent)) {
+            // No multistore content
+            return;
+        }
 
         foreach($block->getMultistoreContent() as $key=>$content)
         {
