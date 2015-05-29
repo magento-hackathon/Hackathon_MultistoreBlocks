@@ -12,6 +12,11 @@
                     <block>Hackathon_MultistoreBlocks_Model_Cms_Block</block>
                 </rewrite>
             </cms>
+            <cms_resource>
+                <rewrite>
+                    <block_collection>Hackathon_MultistoreBlocks_Model_Cms_Resource_Block_Collection</block_collection>
+                </rewrite>
+            </cms_resource>
         </models>
         <helpers>
             <hackathon_multistoreblocks>
