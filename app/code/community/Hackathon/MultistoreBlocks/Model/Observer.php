@@ -23,7 +23,7 @@ class Hackathon_MultistoreBlocks_Model_Observer
         {
             $isActive = $block->getIsActive()[$key]; // upgrade to 5.5 instead of changing this, lazy bastard
             $storeIds = $block->getStoreId()[$key];
-            $existingId = $block->getExistingId[$key];
+            $existingId = $block->getBlockId[$key];
 
             foreach($storeIds as $storeId)
             {
