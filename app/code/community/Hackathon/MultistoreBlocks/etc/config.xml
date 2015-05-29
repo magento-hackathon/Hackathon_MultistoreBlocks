@@ -5,4 +5,25 @@
             <version>0.0.1</version>
         </Hackathon_MultistoreBlocks>
     </modules>
+    <global>
+        <models>
+            <cms>
+                <rewrite>
+                    <block>Hackathon_MultistoreBlocks_Model_Cms_Block</block>
+                </rewrite>
+            </cms>
+        </models>
+    </global>
+    <adminhtml>
+        <events>
+            <cms_block_save_before>
+                <observers>
+                    <hackathon_multistoreblocks_cms_block_before_save>
+                        <class>Hackathon_MultistoreBlocks_Model_Observer</class>
+                        <method>beforeSaveCmsBlock</method>
+                    </hackathon_multistoreblocks_cms_block_before_save>
+                </observers>
+            </cms_block_save_before>
+        </events>
+    </adminhtml>
 </config>
