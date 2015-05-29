@@ -30,6 +30,9 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Grid_Renderer_Store
         $skipEmptyStoresLabel = $this->_getShowEmptyStoresLabelFlag();
         $origStores = $row->getData($this->getColumn()->getIndex());
 
+        // Get active store data
+        $activeStores = $row->getActiveStores();
+
         if (is_null($origStores) && $row->getStoreName()) {
             $scopes = array();
             foreach (explode("\n", $row->getStoreName()) as $k => $label) {
@@ -50,7 +53,9 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Grid_Renderer_Store
             return '';
         }
         elseif (in_array(0, $origStores)) {
-            $out .= Mage::helper('adminhtml')->__('All Store Views') . '<br />';
+            $out .= Mage::helper('adminhtml')->__('All Store Views') . ' (' .
+                ($activeStores[0] ? Mage::helper('adminhtml')->__('Active') :
+                    Mage::helper('adminhtml')->__('Inactive')) . ')<br />';
         }
 
         $data = $this->_getStoreModel()->getStoresStructure(false, $origStores);
@@ -59,8 +64,10 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Grid_Renderer_Store
             $out .= $website['label'] . '<br/>';
             foreach ($website['children'] as $group) {
                 $out .= str_repeat('&nbsp;', 3) . $group['label'] . '<br/>';
-                foreach ($group['children'] as $store) {
-                    $out .= str_repeat('&nbsp;', 6) . $store['label'] . '<br/>';
+                foreach ($group['children'] as $storeId => $store) {
+                    $out .= str_repeat('&nbsp;', 6) . $store['label'] . ' (' .
+                        ($activeStores[$storeId] ? Mage::helper('adminhtml')->__('Active') :
+                            Mage::helper('adminhtml')->__('Inactive')) . ')<br/>';
                 }
             }
         }
