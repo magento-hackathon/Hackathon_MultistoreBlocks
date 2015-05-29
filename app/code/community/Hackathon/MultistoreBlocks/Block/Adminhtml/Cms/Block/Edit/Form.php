@@ -73,6 +73,7 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form extends Mag
             'label'     => Mage::helper('cms')->__('Block Title'),
             'title'     => Mage::helper('cms')->__('Block Title'),
             'required'  => true,
+            'value'     => $model->getTitle(),
         ));
 
         $baseFieldset->addField('identifier', 'text', array(
@@ -81,65 +82,74 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form extends Mag
             'title'     => Mage::helper('cms')->__('Identifier'),
             'required'  => true,
             'class'     => 'validate-xml-identifier',
+            'value'     => $model->getIdentifier(),
         ));
 
 		$tabbedFieldset = $form->addFieldset('tabbed_fieldset', array('legend'=>Mage::helper('cms')->__('Block Content'), 'class' => 'fieldset-wide'));
+
+            
+		$this->setTab($model, $tabbedFieldset);
 		
-		if ($model->getBlockId()) {
-            $tabbedFieldset->addField('block_id', 'hidden', array(
-                'name' => 'block_id',
-            ));
-        }
-        /**
-         * Check is single store mode
-         */
-        if (!Mage::app()->isSingleStoreMode()) {
-            $field =$tabbedFieldset->addField('store_id', 'multiselect', array(
-                'name'      => 'stores[]',
-                'label'     => Mage::helper('cms')->__('Store View'),
-                'title'     => Mage::helper('cms')->__('Store View'),
-                'required'  => true,
-                'values'    => Mage::getSingleton('adminhtml/system_store')->getStoreValuesForForm(false, true),
-            ));
-            $renderer = $this->getLayout()->createBlock('adminhtml/store_switcher_form_renderer_fieldset_element');
-            $field->setRenderer($renderer);
-        }
-        else {
-            $tabbedFieldset->addField('store_id', 'hidden', array(
-                'name'      => 'stores[]',
-                'value'     => Mage::app()->getStore(true)->getId()
-            ));
-            $model->setStoreId(Mage::app()->getStore(true)->getId());
-        }
+		$siblingBlocks = $model->getSiblingBlocks();
 
-        $tabbedFieldset->addField('is_active', 'select', array(
-            'label'     => Mage::helper('cms')->__('Status'),
-            'title'     => Mage::helper('cms')->__('Status'),
-            'name'      => 'is_active',
-            'required'  => true,
-            'options'   => array(
-                '1' => Mage::helper('cms')->__('Enabled'),
-                '0' => Mage::helper('cms')->__('Disabled'),
-            ),
-        ));
-        if (!$model->getId()) {
-            $model->setData('is_active', '1');
-        }
-
-        $tabbedFieldset->addField('content', 'editor', array(
-            'name'      => 'content',
-            'label'     => Mage::helper('cms')->__('Content'),
-            'title'     => Mage::helper('cms')->__('Content'),
-            'style'     => 'height:36em',
-            'required'  => true,
-            'config'    => Mage::getSingleton('cms/wysiwyg_config')->getConfig()
-        ));
-
-        $form->setValues($model->getData());
+		foreach($siblingBlocks as $block){
+            $this->setTab($block, $tabbedFieldset);
+		}
+	
+        //$form->setValues($model->getData());
         $form->setUseContainer(true);
         $this->setForm($form);
 
         //return parent::_prepareForm();
     }
 
+    protected function setTab($block, $fieldset){
+    
+        if (!$block->getId()) {
+            $block->setData('is_active', '1');
+            $block_id = 0;
+        } else {
+            $block_id = $block->getId();
+        }
+        
+        $field =$fieldset->addField('store_id_'.$block_id, 'multiselect', array(
+            'name'      => 'stores_'.$block_id.'[]',
+            'label'     => Mage::helper('cms')->__('Store View'),
+            'title'     => Mage::helper('cms')->__('Store View'),
+            'required'  => true,
+            'values'    => Mage::getSingleton('adminhtml/system_store')->getStoreValuesForForm(false, true),
+            'value'     => $block->getStoreId(),
+        ));
+        if ($block->getBlockId()) {
+            $fieldset->addField('block_id_'.$block_id, 'hidden', array(
+                'name' => 'block_id_'.$block_id,
+                'value'=> $block_id,
+            ));
+        }
+        $renderer = $this->getLayout()->createBlock('adminhtml/store_switcher_form_renderer_fieldset_element');
+        $field->setRenderer($renderer);
+    
+        $fieldset->addField('is_active_'.$block_id, 'select', array(
+            'label'     => Mage::helper('cms')->__('Status'),
+            'title'     => Mage::helper('cms')->__('Status'),
+            'name'      => 'is_active_'.$block_id,
+            'required'  => true,
+            'options'   => array(
+                '1' => Mage::helper('cms')->__('Enabled'),
+                '0' => Mage::helper('cms')->__('Disabled'),
+            ),
+            'value'     => $block->getData('is_active'),
+        ));
+
+
+        $fieldset->addField('content_'.$block_id, 'editor', array(
+            'name'      => 'content_'.$block_id,
+            'label'     => Mage::helper('cms')->__('Content'),
+            'title'     => Mage::helper('cms')->__('Content'),
+            'style'     => 'height:36em',
+            'required'  => true,
+            'config'    => Mage::getSingleton('cms/wysiwyg_config')->getConfig(),
+            'value'     => $block->getContent(),
+        ));
+    }
 }
