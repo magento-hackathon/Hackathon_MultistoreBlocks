@@ -1,6 +1,10 @@
 <?php
 /**
  * Rework to group by identifier
+ *
+ * @author Jeroen Boersma <jeroen@srcode.nl>
+ * @author Willem Wigman <info@willemwigman.nl>
+ * @author Peter Jaap Blaakmeer <peterjaap@elgentos.nl>
  */
 
 /**
