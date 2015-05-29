@@ -16,12 +16,13 @@ class Hackathon_MultistoreBlocks_Model_Observer
         Mage::register('before_save_cms_block_prevent_loop', true);
 
         $block = $observer->getEvent()->getDataObject();
+        Zend_Debug::dump($block);exit;
 
         foreach($block->getContent() as $key=>$content)
         {
             $status = $block->getStatus()[$key]; // upgrade to 5.5 instead of changing this, lazy bastard
             $storeIds = $block->getStoreId()[$key];
-            $existingId = $block->getBlockId[$key];
+            $existingId = $block->getMultistoreBlockId[$key];
 
 
         }
