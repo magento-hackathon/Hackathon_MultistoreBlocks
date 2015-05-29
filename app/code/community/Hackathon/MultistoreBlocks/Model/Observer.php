@@ -2,14 +2,13 @@
 
 class Hackathon_MultistoreBlocks_Model_Observer
 {
-    public function __construct() {
-        if(!Mage::helper('hackathon_multistoreblocks')->isEnabled()) {
-            return;
-        }
-    }
 
     public function beforeSaveCmsBlock($observer)
     {
+        if(!Mage::helper('hackathon_multistoreblocks')->isEnabled()) {
+            return;
+        }
+
         // Prevent function from calling itself
         if(Mage::registry('before_save_cms_block_prevent_loop')) {
             return;
@@ -17,7 +16,7 @@ class Hackathon_MultistoreBlocks_Model_Observer
         Mage::register('before_save_cms_block_prevent_loop', true);
 
         $block = $observer->getEvent()->getDataObject();
-        //Zend_Debug::dump($block);exit;
+
         foreach($block->getContent() as $key=>$content)
         {
             $status = $block->getStatus()[$key]; // upgrade to 5.5 instead of changing this, lazy bastard
@@ -30,6 +29,10 @@ class Hackathon_MultistoreBlocks_Model_Observer
 
     public function loadAfterCmsBlock($observer)
     {
+        if(!Mage::helper('hackathon_multistoreblocks')->isEnabled()) {
+            return;
+        }
+
         $block = $observer->getEvent()->getDataObject();
         if(
             $block->getId()
