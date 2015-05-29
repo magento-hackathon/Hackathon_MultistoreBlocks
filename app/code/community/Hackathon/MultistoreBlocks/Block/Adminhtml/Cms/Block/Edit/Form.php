@@ -113,7 +113,7 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form extends Mag
         }
         
         $field =$fieldset->addField('store_id_'.$block_id, 'multiselect', array(
-            'name'      => 'stores[]',
+            'name'      => 'stores_'.$block_id.'[]',
             'label'     => Mage::helper('cms')->__('Store View'),
             'title'     => Mage::helper('cms')->__('Store View'),
             'required'  => true,
@@ -122,7 +122,7 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form extends Mag
         ));
         if ($block->getBlockId()) {
             $fieldset->addField('block_id_'.$block_id, 'hidden', array(
-                'name' => 'block_id',
+                'name' => 'block_id_'.$block_id,
                 'value'=> $block_id,
             ));
         }
@@ -132,7 +132,7 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form extends Mag
         $fieldset->addField('is_active_'.$block_id, 'select', array(
             'label'     => Mage::helper('cms')->__('Status'),
             'title'     => Mage::helper('cms')->__('Status'),
-            'name'      => 'is_active',
+            'name'      => 'is_active_'.$block_id,
             'required'  => true,
             'options'   => array(
                 '1' => Mage::helper('cms')->__('Enabled'),
@@ -143,7 +143,7 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form extends Mag
 
 
         $fieldset->addField('content_'.$block_id, 'editor', array(
-            'name'      => 'content',
+            'name'      => 'content_'.$block_id,
             'label'     => Mage::helper('cms')->__('Content'),
             'title'     => Mage::helper('cms')->__('Content'),
             'style'     => 'height:36em',
