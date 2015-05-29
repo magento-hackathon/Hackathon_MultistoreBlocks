@@ -85,27 +85,28 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form extends Mag
             'value'     => $model->getIdentifier(),
         ));
 
-		$primaryFieldset = $form->addFieldset('tabbed_fieldset_0', array('legend'=>Mage::helper('cms')->__('Block Content'), 'class' => 'fieldset-wide'));
- 
-		$this->setTab($model, $primaryFieldset);
+		$primaryFieldset = $form->addFieldset('tabbed_fieldset_0', array('legend'=>Mage::helper('cms')->__('Block Content').' ' . $this->getStoreNames($model->getStoreId()), 'class' => 'fieldset-wide'));
+        
+		$this->setTab($model, $primaryFieldset, $form);
 		
 		$siblingBlocks = $model->getSiblingBlocks();
 
 		foreach($siblingBlocks as $block){
     		
-    		$tabbedFieldset = $form->addFieldset('tabbed_fieldset_'.$block->getId(), array('legend'=>Mage::helper('cms')->__('Block Content'), 'class' => 'fieldset-wide'));
-    		
-            $this->setTab($block, $tabbedFieldset);
+            $this->setTab($block, null, $form);
 		}
 	
-        //$form->setValues($model->getData());
         $form->setUseContainer(true);
         $this->setForm($form);
 
-        //return parent::_prepareForm();
     }
 
-    protected function setTab($block, $fieldset){
+    protected function setTab($block, $fieldset=null, $form){
+    
+        if(!$fieldset){
+            $fieldset = $form->addFieldset('tabbed_fieldset_'.$block->getId(), array('legend'=>Mage::helper('cms')->__('Block Content').' ' . $this->getStoreNames($block->getStoreId()), 'class' => 'fieldset-wide'));
+    		
+        }
     
         if (!$block->getId()) {
             $block->setData('is_active', '1');
@@ -153,5 +154,20 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form extends Mag
             'config'    => Mage::getSingleton('cms/wysiwyg_config')->getConfig(),
             'value'     => $block->getContent(),
         ));
+    }
+    
+    protected function getStoreNames($store_ids){
+        
+        $storeNames = array();
+        foreach($store_ids as $store_id){
+            if($store_id == 0){
+                $storeNames[] = Mage::helper('cms')->__('All Store Views');
+            } else {
+                $storeNames[] = Mage::app()->getStore($store_id)->getName();
+            }
+        }
+        $returnValue = implode(', ',$storeNames);
+        
+        return $returnValue;
     }
 }
