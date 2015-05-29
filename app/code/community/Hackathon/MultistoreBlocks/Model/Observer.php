@@ -39,6 +39,7 @@ class Hackathon_MultistoreBlocks_Model_Observer
             ));
 
             try {
+                if(!isset($firstBlock)) $firstBlock = $_block;
 		        $_block->save();
 		        //Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('hackathon_multistoreblocks')->__('Block %s is saved.', $_block->getId()));
             } catch(Exception $e) {
@@ -47,7 +48,7 @@ class Hackathon_MultistoreBlocks_Model_Observer
         }
 
         // Make sure the normal method also saves something instead of creating a new one
-        $block->setData($_block->getData());
+        $block->setData($firstBlock->getData());
 
     }
 
