@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <config>
     <modules>
-        <Mm15nl_MultistoreBlocks>
+        <Hackathon_MultistoreBlocks>
             <version>0.0.1</version>
-        </Mm15nl_MultistoreBlocks>
+        </Hackathon_MultistoreBlocks>
     </modules>
 </config>

@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <config>
     <modules>
-        <Mm15nl_MultistoreBlocks>
+        <Hackathon_MultistoreBlocks>
             <active>true</active>
             <codePool>community</codePool>
             <depends>
                 <Mage_Cms />
             </depends>
-        </Mm15nl_MultistoreBlocks>
+        </Hackathon_MultistoreBlocks>
     </modules>
 </config>
