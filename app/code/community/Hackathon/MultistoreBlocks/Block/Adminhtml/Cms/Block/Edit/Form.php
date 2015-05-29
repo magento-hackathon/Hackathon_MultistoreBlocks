@@ -17,28 +17,26 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form
 {
 
     /**
-     * Init form
+     * Get helper
+     *
+     * @return Hackathon_MultistoreBlocks_Helper_Data
      */
-    public function __construct()
+    protected function _getHelper()
     {
-        parent::__construct();
-        $this->setId('block_form');
-        $this->setTitle(Mage::helper('cms')->__('Block Information'));
+        return Mage::helper('hackathon_multistoreblocks');
     }
 
     /**
-     * Load Wysiwyg on demand and Prepare layout
+     * Build form based on multiblockdata
+     *
+     * @return Mage_Adminhtml_Block_Widget_Form
      */
-    protected function _prepareLayout()
-    {
-        parent::_prepareLayout();
-        if (Mage::getSingleton('cms/wysiwyg_config')->isEnabled()) {
-            $this->getLayout()->getBlock('head')->setCanLoadTinyMce(true);
-        }
-    }
-
     protected function _prepareForm()
     {
+        if (!$this->_getHelper()->isEnabled()) {
+            return parent::_prepareForm();
+        }
+
         $model = Mage::registry('cms_block');
 
         $form = new Varien_Data_Form(
@@ -135,4 +133,5 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form
             'value'     => $block->getContent(),
         ));
     }
+
 }

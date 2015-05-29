@@ -14,6 +14,10 @@
  */
 class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit extends Mage_Adminhtml_Block_Cms_Block_Edit
 {
+
+    /**
+     * Prepare editing
+     */
     public function __construct()
     {
         $this->_objectId = 'block_id';
@@ -54,21 +58,6 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit extends Mage_Adm
                 editForm.submit($('edit_form').action+'back/edit/');
             }
         ";
-    }
-
-    /**
-     * Get edit form container header text
-     *
-     * @return string
-     */
-    public function getHeaderText()
-    {
-        if (Mage::registry('cms_block')->getId()) {
-            return Mage::helper('cms')->__("Edit Block '%s'", $this->escapeHtml(Mage::registry('cms_block')->getTitle()));
-        }
-        else {
-            return Mage::helper('cms')->__('New Block');
-        }
     }
 
 }

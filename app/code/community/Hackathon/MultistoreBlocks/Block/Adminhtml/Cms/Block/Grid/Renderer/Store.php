@@ -36,7 +36,7 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Grid_Renderer_Store
     public function render(Varien_Object $row)
     {
         if (!$this->_getHelper()->isEnabled()) {
-            return parent::_prepareCollection();
+            return parent::render($row);
         }
 
         $out = '';
