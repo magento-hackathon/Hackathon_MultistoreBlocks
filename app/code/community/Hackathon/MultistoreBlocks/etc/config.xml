@@ -13,6 +13,11 @@
                 </rewrite>
             </cms>
         </models>
+		<helpers>
+            <hackathon_multistoreblocks>
+                <class>Hackathon_MultistoreBlocks_Helper</class>
+            </hackathon_multistoreblocks>
+        </helpers>
         <blocks>
 	        <Hackathon_MultistoreBlocks>
 				<class>Hackathon_MultistoreBlocks_Block</class>
@@ -23,6 +28,11 @@
 	                <block_edit>Hackathon_MultistoreBlocks_Block_Cms_Block_Edit</block_edit>
 	            </rewrite>
 	        </cms>
+            <adminhtml>
+                <rewrite>
+                    <cms_block_grid>Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Grid</cms_block_grid>
+                </rewrite>
+            </adminhtml>
         </blocks>
     </global>
     <adminhtml>
