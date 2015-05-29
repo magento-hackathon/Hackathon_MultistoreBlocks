@@ -13,6 +13,17 @@
                 </rewrite>
             </cms>
         </models>
+        <blocks>
+	        <Hackathon_MultistoreBlocks>
+				<class>Hackathon_MultistoreBlocks_Block</class>
+			</Hackathon_MultistoreBlocks>
+	        <cms>
+		        <rewrite>
+	                <block_edit_form>Hackathon_MultistoreBlocks_Block_Cms_Block_Edit_Form</block_edit_form>
+	                <block_edit>Hackathon_MultistoreBlocks_Block_Cms_Block_Edit</block_edit>
+	            </rewrite>
+	        </cms>
+        </blocks>
     </global>
     <adminhtml>
         <events>
