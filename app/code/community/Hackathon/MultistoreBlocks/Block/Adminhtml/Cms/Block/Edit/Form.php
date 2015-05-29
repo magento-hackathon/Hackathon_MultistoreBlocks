@@ -85,16 +85,16 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form extends Mag
             'value'     => $model->getIdentifier(),
         ));
 
-		$tabbedFieldset = $form->addFieldset('tabbed_fieldset', array('legend'=>Mage::helper('cms')->__('Block Content'), 'class' => 'fieldset-wide'));
-
-            
-		$this->setTab($model, $tabbedFieldset);
+		$primaryFieldset = $form->addFieldset('tabbed_fieldset_0', array('legend'=>Mage::helper('cms')->__('Block Content'), 'class' => 'fieldset-wide'));
+ 
+		$this->setTab($model, $primaryFieldset);
 		
 		$siblingBlocks = $model->getSiblingBlocks();
 
-        if(!$siblingBlocks) $siblingBlocks = array();
-
 		foreach($siblingBlocks as $block){
+    		
+    		$tabbedFieldset = $form->addFieldset('tabbed_fieldset_'.$block->getId(), array('legend'=>Mage::helper('cms')->__('Block Content'), 'class' => 'fieldset-wide'));
+    		
             $this->setTab($block, $tabbedFieldset);
 		}
 	
