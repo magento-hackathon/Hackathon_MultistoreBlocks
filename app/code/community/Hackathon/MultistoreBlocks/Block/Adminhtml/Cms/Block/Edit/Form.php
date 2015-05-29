@@ -92,6 +92,8 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form extends Mag
 		
 		$siblingBlocks = $model->getSiblingBlocks();
 
+        if(!$siblingBlocks) $siblingBlocks = array();
+
 		foreach($siblingBlocks as $block){
             $this->setTab($block, $tabbedFieldset);
 		}
