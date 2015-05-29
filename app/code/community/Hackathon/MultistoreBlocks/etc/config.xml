@@ -22,15 +22,11 @@
 	        <Hackathon_MultistoreBlocks>
 				<class>Hackathon_MultistoreBlocks_Block</class>
 			</Hackathon_MultistoreBlocks>
-	        <cms>
-		        <rewrite>
-	                <block_edit_form>Hackathon_MultistoreBlocks_Block_Cms_Block_Edit_Form</block_edit_form>
-	                <block_edit>Hackathon_MultistoreBlocks_Block_Cms_Block_Edit</block_edit>
-	            </rewrite>
-	        </cms>
             <adminhtml>
                 <rewrite>
                     <cms_block_grid>Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Grid</cms_block_grid>
+					<cms_block_edit_form>Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form</cms_block_edit_form>
+	                <cms_block_edit>Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit</cms_block_edit>
                 </rewrite>
             </adminhtml>
         </blocks>
