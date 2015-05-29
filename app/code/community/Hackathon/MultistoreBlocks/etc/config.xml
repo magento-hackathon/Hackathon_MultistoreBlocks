@@ -24,6 +24,14 @@
                     </hackathon_multistoreblocks_cms_block_before_save>
                 </observers>
             </cms_block_save_before>
+            <cms_block_load_after>
+                <observers>
+                    <hackathon_multistoreblocks_cms_block_load_after>
+                        <class>Hackathon_MultistoreBlocks_Model_Observer</class>
+                        <method>loadAfterCmsBlock</method>
+                    </hackathon_multistoreblocks_cms_block_load_after>
+                </observers>
+            </cms_block_load_after>
         </events>
     </adminhtml>
 </config>
