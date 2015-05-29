@@ -13,6 +13,11 @@
                 </rewrite>
             </cms>
         </models>
+        <helpers>
+            <hackathon_multistoreblocks>
+                <class>Hackathon_MultistoreBlocks_Helper</class>
+            </hackathon_multistoreblocks>
+        </helpers>
     </global>
     <adminhtml>
         <events>
