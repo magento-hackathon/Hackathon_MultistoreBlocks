@@ -112,8 +112,8 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form extends Mag
             $block_id = $block->getId();
         }
         
-        $field =$fieldset->addField('store_id_'.$block_id, 'multiselect', array(
-            'name'      => 'stores_'.$block_id.'[]',
+        $field =$fieldset->addField('store_id['.$block_id.']', 'multiselect', array(
+            'name'      => 'stores['.$block_id.'][]',
             'label'     => Mage::helper('cms')->__('Store View'),
             'title'     => Mage::helper('cms')->__('Store View'),
             'required'  => true,
@@ -121,18 +121,18 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form extends Mag
             'value'     => $block->getStoreId(),
         ));
         if ($block->getBlockId()) {
-            $fieldset->addField('block_id_'.$block_id, 'hidden', array(
-                'name' => 'block_id_'.$block_id,
+            $fieldset->addField('block_id['.$block_id.']', 'hidden', array(
+                'name' => 'block_id['.$block_id.']',
                 'value'=> $block_id,
             ));
         }
         $renderer = $this->getLayout()->createBlock('adminhtml/store_switcher_form_renderer_fieldset_element');
         $field->setRenderer($renderer);
     
-        $fieldset->addField('is_active_'.$block_id, 'select', array(
+        $fieldset->addField('is_active['.$block_id.']', 'select', array(
             'label'     => Mage::helper('cms')->__('Status'),
             'title'     => Mage::helper('cms')->__('Status'),
-            'name'      => 'is_active_'.$block_id,
+            'name'      => 'is_active['.$block_id.']',
             'required'  => true,
             'options'   => array(
                 '1' => Mage::helper('cms')->__('Enabled'),
@@ -142,8 +142,8 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form extends Mag
         ));
 
 
-        $fieldset->addField('content_'.$block_id, 'editor', array(
-            'name'      => 'content_'.$block_id,
+        $fieldset->addField('content['.$block_id.']', 'editor', array(
+            'name'      => 'content['.$block_id.']',
             'label'     => Mage::helper('cms')->__('Content'),
             'title'     => Mage::helper('cms')->__('Content'),
             'style'     => 'height:36em',
