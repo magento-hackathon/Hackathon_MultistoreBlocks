@@ -91,7 +91,7 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form extends Mag
 		$this->setTab($model, $tabbedFieldset);
 		
 		$siblingBlocks = $model->getSiblingBlocks();
-		if(!$siblingBlocks) $siblingBlocks = array();
+
 		foreach($siblingBlocks as $block){
             $this->setTab($block, $tabbedFieldset);
 		}
@@ -121,8 +121,8 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form extends Mag
             'value'     => $block->getStoreId(),
         ));
         if ($block->getBlockId()) {
-            $fieldset->addField('block_id['.$block_id.']', 'hidden', array(
-                'name' => 'block_id['.$block_id.']',
+            $fieldset->addField('multistore_block_id['.$block_id.']', 'hidden', array(
+                'name' => 'multistore_block_id['.$block_id.']',
                 'value'=> $block_id,
             ));
         }
