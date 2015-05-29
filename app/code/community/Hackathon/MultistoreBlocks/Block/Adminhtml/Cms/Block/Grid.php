@@ -64,15 +64,26 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Grid extends Mage_Adm
             $select = $connection->select();
 
             $select
-                ->from(array('cb' => $collection->getTable('cms/block')), array())
+                ->from(array('cb' => $collection->getTable('cms/block')), array('is_active'))
                 ->join(array('cbs' => $collection->getTable('cms/block_store')), 'cb.block_id = cbs.block_id', array('store_id'))
                 ->where('cb.identifier = ?', $cmsBlock->getData('identifier'))
                 ->distinct();
 
-            $storeIds = $connection->fetchCol($select);
+            $storeIdData = $connection->fetchAll($select);
+
+            $storeIds = array();
+            $activeStores = array();
+            foreach ($storeIdData as $storeIdRow) {
+                $storeIds[] = $storeIdRow['store_id'];
+                $activeStores[$storeIdRow['store_id']] = $storeIdRow['is_active'];
+            }
+
+            // Be sure to have only one record per store
+            $storeIds = array_unique($storeIds);
 
             $cmsBlock->setStoreId($storeIds)
-                ->setStores($storeIds);
+                ->setStores($storeIds)
+                ->setActiveStores($activeStores);
         }
 
         return $this;
