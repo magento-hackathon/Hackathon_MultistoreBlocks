@@ -18,6 +18,13 @@
                 <class>Hackathon_MultistoreBlocks_Helper</class>
             </hackathon_multistoreblocks>
         </helpers>
+        <blocks>
+            <adminhtml>
+                <rewrite>
+                    <cms_block_grid>Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Grid</cms_block_grid>
+                </rewrite>
+            </adminhtml>
+        </blocks>
     </global>
     <adminhtml>
         <events>
