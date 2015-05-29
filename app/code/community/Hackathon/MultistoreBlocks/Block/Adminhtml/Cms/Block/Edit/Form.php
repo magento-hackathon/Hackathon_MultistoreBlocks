@@ -142,7 +142,7 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form extends Mag
         ));
 
 
-        $fieldset->addField('multistore_content['.$block_id.']', 'editor', array(
+        $fieldset->addField('multistore_content_'.$block_id.'', 'editor', array(
             'name'      => 'multistore_content['.$block_id.']',
             'label'     => Mage::helper('cms')->__('Content'),
             'title'     => Mage::helper('cms')->__('Content'),

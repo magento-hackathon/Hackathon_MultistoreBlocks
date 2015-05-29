@@ -52,11 +52,22 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit extends Mage_Adm
 
         $this->_formScripts[] = "
             function toggleEditor() {
-                if (tinyMCE.getInstanceById('block_content') == null) {
-                    tinyMCE.execCommand('mceAddControl', false, 'block_content');
-                } else {
-                    tinyMCE.execCommand('mceRemoveControl', false, 'block_content');
-                }
+                
+                var textareas = document.getElementsByTagName('textarea'),
+                    forEach = Array.prototype.forEach,
+                    regex = /^block_multilanguage_content.*$/;
+                
+                forEach.call(textareas, function (contentElem) {
+                    console.log(contentElem);
+                    if (contentElem.id !== undefined && regex.test(contentElem.id)) {
+                        if (tinyMCE.getInstanceById(contentElem.id) == null) {
+                            tinyMCE.execCommand('mceAddControl', false, contentElem.id);
+                        } else {
+                            tinyMCE.execCommand('mceRemoveControl', false, contentElem.id);
+                        }
+                    }
+                })
+                
             }
 
             function saveAndContinueEdit(){
