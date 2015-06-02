@@ -32,6 +32,7 @@
                     <cms_block_grid>Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Grid</cms_block_grid>
                     <cms_block_edit_form>Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form</cms_block_edit_form>
                     <cms_block_edit>Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit</cms_block_edit>
+                    <cms_page_grid>Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Grid_Page</cms_page_grid>
                 </rewrite>
             </adminhtml>
         </blocks>
