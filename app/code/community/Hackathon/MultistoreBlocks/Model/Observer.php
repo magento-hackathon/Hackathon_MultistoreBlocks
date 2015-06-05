@@ -33,12 +33,25 @@ class Hackathon_MultistoreBlocks_Model_Observer
         Mage::register('before_save_cms_block_prevent_loop', true);
 
         $block = $observer->getEvent()->getDataObject();
+        /** @var $block Mage_Cms_Model_Block */
 
         $multistoreContent = $block->getMultistoreContent();
         if (!$multistoreContent || !is_array($multistoreContent)) {
             // No multistore content
             return;
         }
+
+        $blockIds = array();
+        foreach($block->getMultistoreContent() as $key=>$content) {
+            $blockIds[] = $block->getMultistoreBlockId()[$key];
+        }
+
+        // Delete all store id references
+        $blockResource = $block->getResource();
+        /** @var $block Mage_Cms_Model_Resource_Block */
+
+        $connection = Mage::getSingleton('core/resource')->getConnection('core_write');
+        $connection->delete($blockResource->getTable('cms/block_store'), 'block_id in(' . implode(',', $blockIds) . ')');
 
         foreach($block->getMultistoreContent() as $key=>$content)
         {
