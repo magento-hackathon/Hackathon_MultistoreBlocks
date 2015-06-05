@@ -116,4 +116,16 @@ class Hackathon_MultistoreBlocks_Model_Observer
 
     }
 
+    public function adminhtmlWidgetContainerHtmlBefore($observer)
+    {
+        $block = $observer->getEvent()->getBlock();
+
+        if(get_class($block) == 'Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit'){
+            $block->addButton('duplicate', array(
+                'label'     => Mage::helper('hackathon_multistoreblocks')->__('Duplicate block'),
+                'onclick'   => "duplicateBlock()"
+            ), 0, 15);
+        }
+    }
+
 }

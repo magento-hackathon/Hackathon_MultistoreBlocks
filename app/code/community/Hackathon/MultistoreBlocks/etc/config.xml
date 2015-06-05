@@ -63,6 +63,14 @@
                     </hackathon_multistoreblocks_cms_block_delete_commit_after>
                 </observers>
             </cms_block_delete_commit_after>
+            <adminhtml_widget_container_html_before>
+                <observers>
+                    <hackathon_multistoreblocks_adminhtml_widget_container_html_before>
+                        <class>Hackathon_MultistoreBlocks_Model_Observer</class>
+                        <method>adminhtmlWidgetContainerHtmlBefore</method>
+                    </hackathon_multistoreblocks_adminhtml_widget_container_html_before>
+                </observers>
+            </adminhtml_widget_container_html_before>
         </events>
         <layout>
             <updates>
