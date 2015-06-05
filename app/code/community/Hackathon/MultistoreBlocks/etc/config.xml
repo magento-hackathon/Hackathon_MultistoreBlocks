@@ -55,6 +55,14 @@
                     </hackathon_multistoreblocks_cms_block_load_after>
                 </observers>
             </cms_block_load_after>
+            <cms_block_delete_commit_after>
+                <observers>
+                    <hackathon_multistoreblocks_cms_block_delete_commit_after>
+                        <class>Hackathon_MultistoreBlocks_Model_Observer</class>
+                        <method>cmsBlockDeleteCommitAfter</method>
+                    </hackathon_multistoreblocks_cms_block_delete_commit_after>
+                </observers>
+            </cms_block_delete_commit_after>
         </events>
     </adminhtml>
 </config>

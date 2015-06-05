@@ -70,6 +70,7 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form
 		
 		$siblingBlocks = $model->getSiblingBlocks();
 
+        if(!is_array($siblingBlocks)) $siblingBlocks = array();
 		foreach($siblingBlocks as $block){
             $this->setTab($block, null, $form);
 		}
@@ -140,6 +141,7 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form
 
     protected function getStoreNames($store_ids)
     {
+        if(!is_array($store_ids)) $store_ids = array();
         $storeNames = array();
         foreach($store_ids as $store_id){
             if($store_id == 0){

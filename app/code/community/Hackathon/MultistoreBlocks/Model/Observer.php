@@ -102,4 +102,18 @@ class Hackathon_MultistoreBlocks_Model_Observer
         }
     }
 
+    public function cmsBlockDeleteCommitAfter($observer)
+    {
+        if(Mage::registry('hackathon_multistoreblocks_delete_blocks')) return;
+
+        Mage::register('hackathon_multistoreblocks_delete_blocks', true);
+        $block = $observer->getEvent()->getDataObject();
+
+        $blocks = Mage::getModel('cms/block')->getCollection()->addFieldToFilter('identifier',$block->getIdentifier())->addFieldToFilter('block_id', array('neq' => $block->getId()));
+        foreach($blocks as $block) {
+            $block->delete();
+        }
+
+    }
+
 }
