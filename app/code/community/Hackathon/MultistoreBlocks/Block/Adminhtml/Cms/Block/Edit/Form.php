@@ -81,9 +81,11 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form
             $jumps[] = '<a href="javascript:$(\'block_tabbed_fieldset_' . $block->getId() . '\').scrollTo()">' . $storeNames .'</a>';
 		}
 
-        $baseFieldset->addField('jump', 'note', array(
-            'text' => implode('<br />', $jumps)
-        ));
+        if($model->getId()) {
+            $baseFieldset->addField('jump', 'note', array(
+                'text' => implode('<br />', $jumps)
+            ));
+        }
 	
         $form->setUseContainer(true);
         $this->setForm($form);
