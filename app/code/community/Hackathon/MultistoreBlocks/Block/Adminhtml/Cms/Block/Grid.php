@@ -122,13 +122,12 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Grid extends Mage_Adm
             'filter_condition_callback' => array($this, '_filterStoreCondition'),
         ), 'identifier');
 
-        $this->addColumnAfter('identifier',array(
+        $this->addColumnAfter('content' ,array(
                 'header' => Mage::helper('cms')->__('Content'),
                 'align' => 'left',
                 'index' => 'content',
                 'renderer' => 'Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Grid_Content_Renderer_Block'
-            )
-            ,'content'
+            ), 'identifier'
         );
 
         // Fix order
