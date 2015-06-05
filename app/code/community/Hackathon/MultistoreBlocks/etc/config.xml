@@ -80,4 +80,15 @@
             </updates>
         </layout>
     </adminhtml>
+    <admin>
+        <routers>
+           <adminhtml>
+               <args>
+                   <modules>
+                       <hackathon_multistoreblocks before="Mage_Adminhtml">Hackathon_MultistoreBlocks_Adminhtml</hackathon_multistoreblocks>
+                   </modules>
+               </args>
+           </adminhtml>
+        </routers>
+    </admin>
 </config>
