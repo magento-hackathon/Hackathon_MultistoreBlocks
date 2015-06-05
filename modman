@@ -1,2 +1,4 @@
 app/code/community/Hackathon/MultistoreBlocks app/code/community/Hackathon/MultistoreBlocks
 app/etc/modules/Hackathon_MultistoreBlocks.xml app/etc/modules/Hackathon_MultistoreBlocks.xml
+app/design/adminhtml/default/default/layout/hackathon_multistoreblocks.xml app/design/adminhtml/default/default/layout/hackathon_multistoreblocks.xml
+app/design/adminhtml/default/default/template/cms/multistoreblocks app/design/adminhtml/default/default/template/cms/multistoreblocks

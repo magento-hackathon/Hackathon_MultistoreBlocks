@@ -34,15 +34,25 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit extends Mage_Adm
             'class'     => 'save',
         ), -100);
 
+        $this->_addScripts();
+    }
+
+    /**
+     * Add scripts
+     *
+     * return void
+     */
+    protected function _addScripts() {
+
+        // Functional scripts
         $this->_formScripts[] = "
             function toggleEditor() {
-                
+
                 var textareas = document.getElementsByTagName('textarea'),
                     forEach = Array.prototype.forEach,
                     regex = /^block_multilanguage_content.*$/;
-                
+
                 forEach.call(textareas, function (contentElem) {
-                    console.log(contentElem);
                     if (contentElem.id !== undefined && regex.test(contentElem.id)) {
                         if (tinyMCE.getInstanceById(contentElem.id) == null) {
                             tinyMCE.execCommand('mceAddControl', false, contentElem.id);
@@ -51,13 +61,14 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit extends Mage_Adm
                         }
                     }
                 })
-                
+
             }
 
             function saveAndContinueEdit(){
                 editForm.submit($('edit_form').action+'back/edit/');
             }
         ";
+
     }
 
 }

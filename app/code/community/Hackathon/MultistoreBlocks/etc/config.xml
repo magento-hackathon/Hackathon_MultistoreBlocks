@@ -64,5 +64,12 @@
                 </observers>
             </cms_block_delete_commit_after>
         </events>
+        <layout>
+            <updates>
+                <hackathon_multistoreblocks>
+                    <file>hackathon_multistoreblocks.xml</file>
+                </hackathon_multistoreblocks>
+            </updates>
+        </layout>
     </adminhtml>
 </config>
