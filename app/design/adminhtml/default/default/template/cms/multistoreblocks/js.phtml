@@ -1,8 +1,69 @@
 <script type="text/javascript">
     (function(){
 
-        
+        var form = $('edit_form');
 
+        if (!form) {
+            return;
+        }
+
+        // Get select inputs
+        var selects = form.getElementsByTagName('select');
+        var usedStores = [];
+
+        function disableOptions()
+        {
+            for (var a = 0; a < selects.length; a++) {
+                (function(element, index){
+                    if (index % 2 !== 0) {
+                        return;
+                    }
+
+                    // Check onchange is already set
+                    !element.onchange  && (element.onchange = function(e) {
+                        updateSelects.call(element, e, index);
+                    });
+
+                    for (var b = 0; b < element.options.length; b++) {
+                        if (usedStores.indexOf(element.options[b].value) !== -1) {
+                            // Found a second time, disable
+                            element.options[b].selected = false;
+                        } else if (element.options[b].selected) {
+                            usedStores.push(element.options[b].value);
+                        }
+                    }
+
+                })(selects[a], a);
+            }
+
+            // Walk again to disable other options
+            for (var a = 0; a < selects.length; a++) {
+                (function(element, index){
+                    if (index % 2 !== 0) {
+                        return;
+                    }
+
+                    for (var b = 0; b < element.options.length; b++) {
+                        if (!element.options[b].selected && usedStores.indexOf(element.options[b].value) !== -1) {
+                            // Found a second time, disable
+                            element.options[b].disabled = true;
+                        } else {
+                            element.options[b].disabled = false;
+                        }
+                    }
+
+                })(selects[a], a);
+            }
+        }
+
+        function updateSelects(event, index)
+        {
+            usedStores = [];
+            disableOptions();
+        }
+
+        // Disable options
+        disableOptions();
 
     })();
 </script>
