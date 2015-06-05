@@ -70,7 +70,7 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form
 		
 		$siblingBlocks = $model->getSiblingBlocks();
 
-        if(!is_array($siblingBlocks)) $siblingBlocks = array();
+        if(!is_object($siblingBlocks)) $siblingBlocks = array();
 		foreach($siblingBlocks as $block){
             $this->setTab($block, null, $form);
 		}
