@@ -64,7 +64,11 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form
             'value'     => $model->getIdentifier(),
         ));
 
-        $primaryFieldset = $form->addFieldset('tabbed_fieldset_0', array('legend'=>Mage::helper('cms')->__('Block Content').' ' . $this->getStoreNames($model->getStoreId()), 'class' => 'fieldset-wide'));
+        $jumps = array('Jump to:');
+
+        $storeNames = $this->getStoreNames($model->getStoreId());
+        $primaryFieldset = $form->addFieldset('tabbed_fieldset_0', array('legend'=>Mage::helper('cms')->__('Block Content').' ' . $storeNames, 'class' => 'fieldset-wide'));
+        $jumps[] = '<a href="javascript:$(\'block_tabbed_fieldset_' . $model->getId() . '\').scrollTo()">' . $storeNames .'</a>';
 
         $this->setTab($model, $primaryFieldset, $form);
 		
@@ -73,7 +77,13 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form
         if(!is_object($siblingBlocks)) $siblingBlocks = array();
 		foreach($siblingBlocks as $block){
             $this->setTab($block, null, $form);
+            $storeNames = $this->getStoreNames($block->getStoreId());
+            $jumps[] = '<a href="javascript:$(\'block_tabbed_fieldset_' . $block->getId() . '\').scrollTo()">' . $storeNames .'</a>';
 		}
+
+        $baseFieldset->addField('jump', 'note', array(
+            'text' => implode('<br />', $jumps)
+        ));
 	
         $form->setUseContainer(true);
         $this->setForm($form);
