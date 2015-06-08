@@ -1,39 +1,23 @@
 <?php
 /**
- * Magento
+ * Multistoreview Cms Block edit
  *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@magento.com so we can send you a copy immediately.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Magento to newer
- * versions in the future. If you wish to customize Magento for your
- * needs please refer to http://www.magento.com for more information.
- *
- * @category    Mage
- * @package     Mage_Adminhtml
- * @copyright  Copyright (c) 2006-2015 X.commerce, Inc. (http://www.magento.com)
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author Jeroen Boersma <jeroen@srcode.nl>
+ * @author Willem Wigman <info@willemwigman.nl>
+ * @author Peter Jaap Blaakmeer <peterjaap@elgentos.nl>
  */
 
 
 /**
- * CMS block edit form container
- *
- * @category   Mage
- * @package    Mage_Adminhtml
- * @author      Magento Core Team <core@magentocommerce.com>
+ * @package Hackathon_MultistoreBlocks
+ * @category Hackathon
  */
 class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit extends Mage_Adminhtml_Block_Cms_Block_Edit
 {
+
+    /**
+     * Prepare editing
+     */
     public function __construct()
     {
         $this->_objectId = 'block_id';
@@ -50,15 +34,25 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit extends Mage_Adm
             'class'     => 'save',
         ), -100);
 
+        $this->_addScripts();
+    }
+
+    /**
+     * Add scripts
+     *
+     * return void
+     */
+    protected function _addScripts() {
+
+        // Functional scripts
         $this->_formScripts[] = "
             function toggleEditor() {
-                
+
                 var textareas = document.getElementsByTagName('textarea'),
                     forEach = Array.prototype.forEach,
                     regex = /^block_multilanguage_content.*$/;
-                
+
                 forEach.call(textareas, function (contentElem) {
-                    console.log(contentElem);
                     if (contentElem.id !== undefined && regex.test(contentElem.id)) {
                         if (tinyMCE.getInstanceById(contentElem.id) == null) {
                             tinyMCE.execCommand('mceAddControl', false, contentElem.id);
@@ -67,28 +61,14 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit extends Mage_Adm
                         }
                     }
                 })
-                
+
             }
 
             function saveAndContinueEdit(){
                 editForm.submit($('edit_form').action+'back/edit/');
             }
         ";
-    }
 
-    /**
-     * Get edit form container header text
-     *
-     * @return string
-     */
-    public function getHeaderText()
-    {
-        if (Mage::registry('cms_block')->getId()) {
-            return Mage::helper('cms')->__("Edit Block '%s'", $this->escapeHtml(Mage::registry('cms_block')->getTitle()));
-        }
-        else {
-            return Mage::helper('cms')->__('New Block');
-        }
     }
 
 }

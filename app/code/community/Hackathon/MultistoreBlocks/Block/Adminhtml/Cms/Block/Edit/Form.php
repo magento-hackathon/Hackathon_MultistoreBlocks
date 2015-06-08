@@ -1,69 +1,42 @@
 <?php
 /**
- * Magento
+ * Multistoreview admin edit form
  *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@magento.com so we can send you a copy immediately.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Magento to newer
- * versions in the future. If you wish to customize Magento for your
- * needs please refer to http://www.magento.com for more information.
- *
- * @category    Mage
- * @package     Mage_Adminhtml
- * @copyright  Copyright (c) 2006-2015 X.commerce, Inc. (http://www.magento.com)
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author Jeroen Boersma <jeroen@srcode.nl>
+ * @author Willem Wigman <info@willemwigman.nl>
+ * @author Peter Jaap Blaakmeer <peterjaap@elgentos.nl>
  */
 
 
 /**
- * Adminhtml cms block edit form
- *
- * @category   Mage
- * @package    Mage_Adminhtml
- * @author      Magento Core Team <core@magentocommerce.com>
+ * @package Hackathon_MultistoreBlocks
+ * @category Hackathon
  */
-class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form extends Mage_Adminhtml_Block_Cms_Block_Edit_Form
+class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form
+    extends Mage_Adminhtml_Block_Cms_Block_Edit_Form
 {
 
     /**
-     * Init form
+     * Get helper
+     *
+     * @return Hackathon_MultistoreBlocks_Helper_Data
      */
-    public function __construct()
+    protected function _getHelper()
     {
-        parent::__construct();
-        $this->setId('block_form');
-        $this->setTitle(Mage::helper('cms')->__('Block Information'));
+        return Mage::helper('hackathon_multistoreblocks');
     }
 
     /**
-     * Load Wysiwyg on demand and Prepare layout
+     * Build form based on multiblockdata
+     *
+     * @return Mage_Adminhtml_Block_Widget_Form
      */
-    protected function _prepareLayout()
-    {
-        parent::_prepareLayout();
-        if (Mage::getSingleton('cms/wysiwyg_config')->isEnabled()) {
-            $this->getLayout()->getBlock('head')->setCanLoadTinyMce(true);
-        }
-    }
-
     protected function _prepareForm()
     {
-        if(!Mage::helper('hackathon_multistoreblocks')->isEnabled()) {
-
+        if (!$this->_getHelper()->isEnabled()) {
             return parent::_prepareForm();
-            return;
         }
-        
+
         $model = Mage::registry('cms_block');
 
         $form = new Varien_Data_Form(
@@ -94,33 +67,48 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form extends Mag
             'value'     => $model->getIdentifier(),
         ));
 
-		$primaryFieldset = $form->addFieldset('tabbed_fieldset_0', array(
-		    'legend'=>Mage::helper('cms')->__('Block Content'). ' // ' . $this->getStoreNames($model->getStoreId()),
-		    'class' => 'fieldset-wide')
-        );
-        
-		$this->setTab($model, $primaryFieldset, $form);
+
+        $jumps = array('Jump to:');
+
+        $storeNames = $this->getStoreNames($model->getStoreId());
+        $primaryFieldset = $form->addFieldset('tabbed_fieldset_0', array(
+        	'legend'=>Mage::helper('cms')->__('Block Content for:').' ' . $storeNames,
+        	'class' => 'fieldset-wide'
+        ));
+        $jumps[] = '<a href="javascript:$(\'block_tabbed_fieldset_' . $model->getId() . '\').scrollTo()">' . $storeNames .'</a>';
+
+        $this->setTab($model, $primaryFieldset, $form);
 		
 		$siblingBlocks = $model->getSiblingBlocks();
 
+        if(!is_object($siblingBlocks)) $siblingBlocks = array();
 		foreach($siblingBlocks as $block){
-    		
             $this->setTab($block, null, $form);
+            $storeNames = $this->getStoreNames($block->getStoreId());
+            $jumps[] = '<a href="javascript:$(\'block_tabbed_fieldset_' . $block->getId() . '\').scrollTo();void(0)">' . $storeNames .'</a>';
 		}
+
+        if($model->getId()) {
+            $baseFieldset->addField('jump', 'note', array(
+                'text' => implode('<br />', $jumps)
+            ));
+        }
 	
         $form->setUseContainer(true);
         $this->setForm($form);
-
     }
 
-    protected function setTab($block, $fieldset=null, $form){
-    
+    protected function setTab($block, $fieldset, $form){
+
         if(!$fieldset){
-            $fieldset = $form->addFieldset('tabbed_fieldset_'.$block->getId(), array(
-                'legend'=>Mage::helper('cms')->__('Block Content'). ' // ' . $this->getStoreNames($block->getStoreId()),
-                'class' => 'fieldset-wide')
+
+            $fieldset = $form->addFieldset(
+                'tabbed_fieldset_'.$block->getId(),
+                array(
+                    'legend'=>Mage::helper('cms')->__('Block Content for: ').' ' . $this->getStoreNames($block->getStoreId()),
+                    'class' => 'fieldset-wide'
+                )
             );
-    		
         }
     
         if (!$block->getId()) {
@@ -170,9 +158,10 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form extends Mag
             'value'     => $block->getContent(),
         ));
     }
-    
-    protected function getStoreNames($store_ids){
-        
+
+    protected function getStoreNames($store_ids)
+    {
+        if(!is_array($store_ids)) $store_ids = array();
         $storeNames = array();
         foreach($store_ids as $store_id){
             if($store_id == 0){
@@ -181,8 +170,10 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form extends Mag
                 $storeNames[] = Mage::app()->getStore($store_id)->getName();
             }
         }
-        $returnValue = implode(' + ',$storeNames);
-        
+
+        $returnValue = implode(', ',$storeNames);
+
         return $returnValue;
     }
+
 }

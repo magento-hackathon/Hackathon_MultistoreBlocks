@@ -1,11 +1,28 @@
 <?php
+/**
+ * Multistoreblocks observer
+ *
+ * @author Jeroen Boersma <jeroen@srcode.nl>
+ * @author Willem Wigman <info@willemwigman.nl>
+ * @author Peter Jaap Blaakmeer <peterjaap@elgentos.nl>
+ */
 
+/**
+ * @package Hackathon_MultistoreBlocks
+ * @category Hackathon
+ */
 class Hackathon_MultistoreBlocks_Model_Observer
 {
 
+    /**
+     * Save multistore block content
+     *
+     * @param $observer
+     */
     public function beforeSaveCmsBlock($observer)
     {
         if(!Mage::helper('hackathon_multistoreblocks')->isEnabled()) {
+            // Not enabled
             return;
         }
 
@@ -16,10 +33,29 @@ class Hackathon_MultistoreBlocks_Model_Observer
         Mage::register('before_save_cms_block_prevent_loop', true);
 
         $block = $observer->getEvent()->getDataObject();
+        /** @var $block Mage_Cms_Model_Block */
+
+        $multistoreContent = $block->getMultistoreContent();
+        if (!$multistoreContent || !is_array($multistoreContent)) {
+            // No multistore content
+            return;
+        }
+
+        $blockIds = array();
+        foreach($block->getMultistoreContent() as $key=>$content) {
+            $blockIds[] = $block->getMultistoreBlockId()[$key];
+        }
+
+        // Delete all store id references
+        $blockResource = $block->getResource();
+        /** @var $block Mage_Cms_Model_Resource_Block */
+
+        $connection = Mage::getSingleton('core/resource')->getConnection('core_write');
+        $connection->delete($blockResource->getTable('cms/block_store'), 'block_id in(' . implode(',', $blockIds) . ')');
 
         foreach($block->getMultistoreContent() as $key=>$content)
         {
-            $isActive = $block->getMultistoreIsActive()[$key]; // upgrade to 5.5 instead of changing this, lazy bastard
+            $isActive = $block->getMultistoreIsActive()[$key];
             $stores = $block->getMultistoreStores()[$key];
             $existingId = $block->getMultistoreBlockId()[$key];
 
@@ -39,9 +75,11 @@ class Hackathon_MultistoreBlocks_Model_Observer
             ));
 
             try {
-                if(!isset($firstBlock)) $firstBlock = $_block;
+                if(!isset($firstBlock))
+                {
+                    $firstBlock = $_block;
+                }
 		        $_block->save();
-		        //Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('hackathon_multistoreblocks')->__('Block %s is saved.', $_block->getId()));
             } catch(Exception $e) {
                 Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
             }
@@ -76,6 +114,59 @@ class Hackathon_MultistoreBlocks_Model_Observer
             }
 
             $block->setSiblingBlocks($siblingBlocks);
+        }
+    }
+
+    public function cmsBlockDeleteCommitAfter($observer)
+    {
+        if(Mage::registry('hackathon_multistoreblocks_delete_blocks'))
+        {
+            return;
+        }
+
+        Mage::register('hackathon_multistoreblocks_delete_blocks', true);
+        $block = $observer->getEvent()->getDataObject();
+
+        $blocks = Mage::getModel('cms/block')
+            ->getCollection()
+            ->addFieldToFilter('identifier',$block->getIdentifier())
+            ->addFieldToFilter('block_id',
+                array(
+                    'neq' => $block->getId()
+                )
+            );
+        foreach($blocks as $block) {
+            $block->delete();
+        }
+
+    }
+
+    public function adminhtmlWidgetContainerHtmlBefore($observer)
+    {
+        if(!Mage::app()->isSingleStoreMode())
+        {
+            return;
+        }
+
+        $editBlock = $observer->getEvent()->getBlock();
+
+        $blockId = Mage::app()->getRequest()->getParam('block_id');
+        if(!$blockId)
+        {
+            return;
+        }
+
+        if($editBlock instanceof Mage_Adminhtml_Block_Cms_Block_Edit)
+        {
+            $latestBlockId = Mage::getModel('cms/block')->getCollection()->setOrder('block_id','DESC')->getFirstItem()->getId();
+
+            $duplicateActionUrl = Mage::helper("adminhtml")->getUrl('*/multistoreblocks/duplicate');
+            if($latestBlockId) {
+                $editBlock->addButton('duplicate', array(
+                    'label' => Mage::helper('hackathon_multistoreblocks')->__('Duplicate block'),
+                    'onclick' => "(function () { editForm.submit('" . $duplicateActionUrl . "'); })()"
+                ), 0, 15);
+            }
         }
     }
 

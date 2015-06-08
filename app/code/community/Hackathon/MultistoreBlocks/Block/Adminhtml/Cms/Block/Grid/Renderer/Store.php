@@ -1,5 +1,18 @@
 <?php
+/**
+ * Multistoreview store renderer
+ * Adds active and default store view in grid view
+ *
+ * @author Jeroen Boersma <jeroen@srcode.nl>
+ * @author Willem Wigman <info@willemwigman.nl>
+ * @author Peter Jaap Blaakmeer <peterjaap@elgentos.nl>
+ */
 
+
+/**
+ * @package Hackathon_MultistoreBlocks
+ * @category Hackathon
+ */
 class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Grid_Renderer_Store
     extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Store
 {
@@ -23,7 +36,7 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Grid_Renderer_Store
     public function render(Varien_Object $row)
     {
         if (!$this->_getHelper()->isEnabled()) {
-            return parent::_prepareCollection();
+            return parent::render($row);
         }
 
         $out = '';

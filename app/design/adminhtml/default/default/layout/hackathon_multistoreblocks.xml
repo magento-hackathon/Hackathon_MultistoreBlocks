@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<layout>
+
+    <adminhtml_cms_block_edit>
+        <reference name="content">
+            <block type="core/template" name="cms_block_js" template="cms/multistoreblocks/js.phtml"></block>
+        </reference>
+    </adminhtml_cms_block_edit>
+
+</layout>

@@ -12,6 +12,11 @@
                     <block>Hackathon_MultistoreBlocks_Model_Cms_Block</block>
                 </rewrite>
             </cms>
+            <cms_resource>
+                <rewrite>
+                    <block_collection>Hackathon_MultistoreBlocks_Model_Cms_Resource_Block_Collection</block_collection>
+                </rewrite>
+            </cms_resource>
         </models>
         <helpers>
             <hackathon_multistoreblocks>
@@ -27,6 +32,7 @@
                     <cms_block_grid>Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Grid</cms_block_grid>
                     <cms_block_edit_form>Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form</cms_block_edit_form>
                     <cms_block_edit>Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit</cms_block_edit>
+                    <cms_page_grid>Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Grid_Page</cms_page_grid>
                 </rewrite>
             </adminhtml>
         </blocks>
@@ -49,6 +55,40 @@
                     </hackathon_multistoreblocks_cms_block_load_after>
                 </observers>
             </cms_block_load_after>
+            <cms_block_delete_commit_after>
+                <observers>
+                    <hackathon_multistoreblocks_cms_block_delete_commit_after>
+                        <class>Hackathon_MultistoreBlocks_Model_Observer</class>
+                        <method>cmsBlockDeleteCommitAfter</method>
+                    </hackathon_multistoreblocks_cms_block_delete_commit_after>
+                </observers>
+            </cms_block_delete_commit_after>
+            <adminhtml_widget_container_html_before>
+                <observers>
+                    <hackathon_multistoreblocks_adminhtml_widget_container_html_before>
+                        <class>Hackathon_MultistoreBlocks_Model_Observer</class>
+                        <method>adminhtmlWidgetContainerHtmlBefore</method>
+                    </hackathon_multistoreblocks_adminhtml_widget_container_html_before>
+                </observers>
+            </adminhtml_widget_container_html_before>
         </events>
+        <layout>
+            <updates>
+                <hackathon_multistoreblocks>
+                    <file>hackathon_multistoreblocks.xml</file>
+                </hackathon_multistoreblocks>
+            </updates>
+        </layout>
     </adminhtml>
+    <admin>
+        <routers>
+           <adminhtml>
+               <args>
+                   <modules>
+                       <hackathon_multistoreblocks before="Mage_Adminhtml">Hackathon_MultistoreBlocks_Adminhtml</hackathon_multistoreblocks>
+                   </modules>
+               </args>
+           </adminhtml>
+        </routers>
+    </admin>
 </config>

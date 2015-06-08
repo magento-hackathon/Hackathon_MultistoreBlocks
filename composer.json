@@ -1,0 +1,10 @@
+{
+    "name": "magento-hackathon/multistoreblocks",
+    "license": "MIT",
+    "type": "magento-module",
+    "description": "Simplifies adding and editing of blocks that are present in multiple store views, mostly for translation purposes.",
+    "homepage": "https://github.com/magento-hackathon/Hackathon_MultistoreBlocks",
+    "require": {
+        "magento-hackathon/magento-composer-installer": "*"
+    }
+}

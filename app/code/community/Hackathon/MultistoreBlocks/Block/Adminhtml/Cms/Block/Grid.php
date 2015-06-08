@@ -1,6 +1,10 @@
 <?php
 /**
  * Rework to group by identifier
+ *
+ * @author Jeroen Boersma <jeroen@srcode.nl>
+ * @author Willem Wigman <info@willemwigman.nl>
+ * @author Peter Jaap Blaakmeer <peterjaap@elgentos.nl>
  */
 
 /**
@@ -115,9 +119,16 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Grid extends Mage_Adm
             'store_view'    => true,
             'sortable'      => false,
             'renderer'      => 'Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Grid_Renderer_Store',
-            'filter_condition_callback'
-                => array($this, '_filterStoreCondition'),
+            'filter_condition_callback' => array($this, '_filterStoreCondition'),
         ), 'identifier');
+
+        $this->addColumnAfter('content' ,array(
+                'header' => Mage::helper('cms')->__('Content'),
+                'align' => 'left',
+                'index' => 'content',
+                'renderer' => 'Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Grid_Content_Renderer_Block'
+            ), 'identifier'
+        );
 
         // Fix order
         $this->sortColumnsByOrder();
