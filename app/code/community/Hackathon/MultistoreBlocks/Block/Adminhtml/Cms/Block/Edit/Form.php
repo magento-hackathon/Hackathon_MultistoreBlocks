@@ -58,6 +58,12 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form extends Mag
 
     protected function _prepareForm()
     {
+        if(!Mage::helper('hackathon_multistoreblocks')->isEnabled()) {
+
+            return parent::_prepareForm();
+            return;
+        }
+        
         $model = Mage::registry('cms_block');
 
         $form = new Varien_Data_Form(
@@ -66,7 +72,10 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form extends Mag
 
         $form->setHtmlIdPrefix('block_');
 
-        $baseFieldset = $form->addFieldset('base_fieldset', array('legend'=>Mage::helper('cms')->__('General Information'), 'class' => 'fieldset-wide'));
+        $baseFieldset = $form->addFieldset('base_fieldset', array(
+            'legend'=>Mage::helper('cms')->__('General Information'),
+            'class' => 'fieldset-wide')
+        );
 
         $baseFieldset->addField('title', 'text', array(
             'name'      => 'title',
@@ -85,7 +94,10 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form extends Mag
             'value'     => $model->getIdentifier(),
         ));
 
-		$primaryFieldset = $form->addFieldset('tabbed_fieldset_0', array('legend'=>Mage::helper('cms')->__('Block Content').' ' . $this->getStoreNames($model->getStoreId()), 'class' => 'fieldset-wide'));
+		$primaryFieldset = $form->addFieldset('tabbed_fieldset_0', array(
+		    'legend'=>Mage::helper('cms')->__('Block Content'). ' // ' . $this->getStoreNames($model->getStoreId()),
+		    'class' => 'fieldset-wide')
+        );
         
 		$this->setTab($model, $primaryFieldset, $form);
 		
@@ -104,7 +116,10 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form extends Mag
     protected function setTab($block, $fieldset=null, $form){
     
         if(!$fieldset){
-            $fieldset = $form->addFieldset('tabbed_fieldset_'.$block->getId(), array('legend'=>Mage::helper('cms')->__('Block Content').' ' . $this->getStoreNames($block->getStoreId()), 'class' => 'fieldset-wide'));
+            $fieldset = $form->addFieldset('tabbed_fieldset_'.$block->getId(), array(
+                'legend'=>Mage::helper('cms')->__('Block Content'). ' // ' . $this->getStoreNames($block->getStoreId()),
+                'class' => 'fieldset-wide')
+            );
     		
         }
     
@@ -166,7 +181,7 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form extends Mag
                 $storeNames[] = Mage::app()->getStore($store_id)->getName();
             }
         }
-        $returnValue = implode(', ',$storeNames);
+        $returnValue = implode(' + ',$storeNames);
         
         return $returnValue;
     }
