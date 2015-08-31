@@ -45,7 +45,10 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form
 
         $form->setHtmlIdPrefix('block_');
 
-        $baseFieldset = $form->addFieldset('base_fieldset', array('legend'=>Mage::helper('cms')->__('General Information'), 'class' => 'fieldset-wide'));
+        $baseFieldset = $form->addFieldset('base_fieldset', array(
+            'legend'=>Mage::helper('cms')->__('General Information'),
+            'class' => 'fieldset-wide')
+        );
 
         $baseFieldset->addField('title', 'text', array(
             'name'      => 'title',
@@ -64,10 +67,14 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form
             'value'     => $model->getIdentifier(),
         ));
 
+
         $jumps = array('Jump to:');
 
         $storeNames = $this->getStoreNames($model->getStoreId());
-        $primaryFieldset = $form->addFieldset('tabbed_fieldset_0', array('legend'=>Mage::helper('cms')->__('Block Content').' ' . $storeNames, 'class' => 'fieldset-wide'));
+        $primaryFieldset = $form->addFieldset('tabbed_fieldset_0', array(
+        	'legend'=>Mage::helper('cms')->__('Block Content for:').' ' . $storeNames,
+        	'class' => 'fieldset-wide'
+        ));
         $jumps[] = '<a href="javascript:$(\'block_tabbed_fieldset_' . $model->getId() . '\').scrollTo()">' . $storeNames .'</a>';
 
         $this->setTab($model, $primaryFieldset, $form);
@@ -94,10 +101,11 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form
     protected function setTab($block, $fieldset, $form){
 
         if(!$fieldset){
+
             $fieldset = $form->addFieldset(
                 'tabbed_fieldset_'.$block->getId(),
                 array(
-                    'legend'=>Mage::helper('cms')->__('Block Content').' ' . $this->getStoreNames($block->getStoreId()),
+                    'legend'=>Mage::helper('cms')->__('Block Content for: ').' ' . $this->getStoreNames($block->getStoreId()),
                     'class' => 'fieldset-wide'
                 )
             );
@@ -162,6 +170,7 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form
                 $storeNames[] = Mage::app()->getStore($store_id)->getName();
             }
         }
+
         $returnValue = implode(', ',$storeNames);
 
         return $returnValue;
