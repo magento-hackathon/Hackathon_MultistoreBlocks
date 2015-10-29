@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Hackathon_MultistoreBlocks>
-            <version>0.0.2i</version>
+            <version>0.0.2</version>
         </Hackathon_MultistoreBlocks>
     </modules>
     <global>
