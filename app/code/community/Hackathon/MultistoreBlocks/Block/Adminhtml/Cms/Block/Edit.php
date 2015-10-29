@@ -65,7 +65,7 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit extends Mage_Adm
             foreach($noSpecificBlocksForStoreIds as $storeId) {
                 $this->_addButton('add_for_store_' . $storeId, array(
                     'label'     => Mage::helper('adminhtml')->__('Duplicate block for %s', $storeIds[$storeId]),
-                    'onclick'   => 'setLocation(\'' . Mage::helper('adminhtml')->getUrl('adminhtml/cms_block/new', array('original_block_id' => 3, 'store_id' => $storeId)) .'\')',
+                    'onclick'   => 'setLocation(\'' . Mage::helper('adminhtml')->getUrl('adminhtml/cms_block/new', array('original_block_id' => $block->getId(), 'store_id' => $storeId)) .'\')',
                     'class'     => 'add',
                 ));
             }
