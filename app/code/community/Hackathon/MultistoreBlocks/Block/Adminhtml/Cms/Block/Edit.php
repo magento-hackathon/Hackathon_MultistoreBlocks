@@ -44,18 +44,20 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit extends Mage_Adm
                 $storeIds[$store->getId()] = $store->getName();
             }
 
-            $db = Mage::getModel('core/resource')->getConnection('core_write');
+            $resource = Mage::getSingleton('core/resource');
+            $db = $resource->getConnection('core_write');
+
             $storeIdsWithThisBlock = $db->fetchCol(
                 $db->select()
-                    ->from('cms_block_store', 'store_id')
+                    ->from(array('bs' => $resource->getTableName('cms/block_store')), 'store_id')
                     ->join(
-                        'cms_block',
-                        'cms_block.block_id = cms_block_store.block_id',
+                        array('b' => $resource->getTableName('cms/block')),
+                        'bs.block_id = b.block_id',
                         array(
-                            'store_id' => 'cms_block_store.store_id'
+                            'store_id' => 'bs.store_id'
                         )
                     )
-                    ->where('cms_block.identifier = ?', $block->getIdentifier())
+                    ->where('b.identifier = ?', $block->getIdentifier())
             );
 
             $noSpecificBlocksForStoreIds = array_diff(
