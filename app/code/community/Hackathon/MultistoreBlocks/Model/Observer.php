@@ -59,6 +59,7 @@ class Hackathon_MultistoreBlocks_Model_Observer
 
         foreach($block->getMultistoreContent() as $key=>$content)
         {
+            $title = $block->getMultistoreTitle()[$key];
             $isActive = $block->getMultistoreIsActive()[$key];
             $stores = $block->getMultistoreStores()[$key];
             $existingId = $block->getMultistoreBlockId()[$key];
@@ -71,7 +72,7 @@ class Hackathon_MultistoreBlocks_Model_Observer
             }
 
             $_block->addData(array(
-                'title' => $block->getTitle(),
+                'title' => $title,
                 'identifier' => $block->getIdentifier(),
                 'is_active' => $isActive,
                 'stores' => $stores,
@@ -175,3 +176,4 @@ class Hackathon_MultistoreBlocks_Model_Observer
     }
 
 }
+
