@@ -72,7 +72,7 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit extends Mage_Adm
                 ));
             }
             $storeId = Mage_Core_Model_App::ADMIN_STORE_ID;
-            if ( ! in_array(0, $storeIdsWithThisBlock)) {
+            if ( ! in_array($storeId, $storeIdsWithThisBlock)) {
                 $this->_addButton('add_for_store_' . $storeId, array(
                     'label'     => Mage::helper('adminhtml')->__('Duplicate block for %s', '"all store views"'),
                     'onclick'   => 'setLocation(\'' . Mage::helper('adminhtml')->getUrl('adminhtml/cms_block/new', array('original_block_id' => $block->getId(), 'store_id' => $storeId)) .'\')',
