@@ -13,3 +13,4 @@ No known issues. Yet.
 * Peter Jaap Blaakmeer ([@peterjaap](http://twitter.com/peterjaap) / [peterjaap](http://github.com/peterjaap))
 * Jeroen Boersma ([@srcoder](http://twitter.com/srcoder) / [JeroenBoersma](http://github.com/JeroenBoersma))
 * Willem Wigman ([@willemwigman](http://twitter.com/willemwigman) / [wigman](http://github.com/wigman))
+* Simon Sprankel ([@SimonSprankel](http://twitter.com/SimonSprankel) / [sprankhub](http://github.com/sprankhub))
