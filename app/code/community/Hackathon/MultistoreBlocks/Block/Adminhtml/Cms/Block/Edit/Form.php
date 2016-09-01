@@ -50,14 +50,6 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form
             'class' => 'fieldset-wide')
         );
 
-        $baseFieldset->addField('title', 'text', array(
-            'name'      => 'title',
-            'label'     => Mage::helper('cms')->__('Block Title'),
-            'title'     => Mage::helper('cms')->__('Block Title'),
-            'required'  => true,
-            'value'     => $model->getTitle(),
-        ));
-
         $baseFieldset->addField('identifier', 'text', array(
             'name'      => 'identifier',
             'label'     => Mage::helper('cms')->__('Identifier'),
@@ -120,7 +112,15 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form
         } else {
             $block_id = $block->getId();
         }
-        
+
+        $fieldset->addField('multistore_title_'.$block_id, 'text', array(
+            'name'      => 'multistore_title['.$block_id.']',
+            'label'     => Mage::helper('cms')->__('Block Title'),
+            'title'     => Mage::helper('cms')->__('Block Title'),
+            'required'  => true,
+            'value'     => $block->getTitle(),
+        ));
+
         $field =$fieldset->addField('multistore_store_id['.$block_id.']', 'multiselect', array(
             'name'      => 'multistore_stores['.$block_id.'][]',
             'label'     => Mage::helper('cms')->__('Store View'),
@@ -185,3 +185,4 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form
     }
 
 }
+

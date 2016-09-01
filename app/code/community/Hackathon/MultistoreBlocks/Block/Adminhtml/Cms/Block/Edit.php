@@ -49,18 +49,20 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit extends Mage_Adm
                 $storeIds[$store->getId()] = $store->getName();
             }
 
-            $db = Mage::getModel('core/resource')->getConnection('core_write');
+            $resource = Mage::getSingleton('core/resource');
+            $db = $resource->getConnection('core_write');
+
             $storeIdsWithThisBlock = $db->fetchCol(
                 $db->select()
-                    ->from('cms_block_store', 'store_id')
+                    ->from(array('bs' => $resource->getTableName('cms/block_store')), 'store_id')
                     ->join(
-                        'cms_block',
-                        'cms_block.block_id = cms_block_store.block_id',
+                        array('b' => $resource->getTableName('cms/block')),
+                        'bs.block_id = b.block_id',
                         array(
-                            'store_id' => 'cms_block_store.store_id'
+                            'store_id' => 'bs.store_id'
                         )
                     )
-                    ->where('cms_block.identifier = ?', $block->getIdentifier())
+                    ->where('b.identifier = ?', $block->getIdentifier())
             );
 
             $noSpecificBlocksForStoreIds = array_diff(
@@ -70,6 +72,14 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit extends Mage_Adm
             foreach($noSpecificBlocksForStoreIds as $storeId) {
                 $this->_addButton('add_for_store_' . $storeId, array(
                     'label'     => Mage::helper('adminhtml')->__('Duplicate block for %s', $storeIds[$storeId]),
+                    'onclick'   => 'setLocation(\'' . Mage::helper('adminhtml')->getUrl('adminhtml/cms_block/new', array('original_block_id' => $block->getId(), 'store_id' => $storeId)) .'\')',
+                    'class'     => 'add',
+                ));
+            }
+            $storeId = Mage_Core_Model_App::ADMIN_STORE_ID;
+            if ( ! in_array($storeId, $storeIdsWithThisBlock)) {
+                $this->_addButton('add_for_store_' . $storeId, array(
+                    'label'     => Mage::helper('adminhtml')->__('Duplicate block for %s', '"all store views"'),
                     'onclick'   => 'setLocation(\'' . Mage::helper('adminhtml')->getUrl('adminhtml/cms_block/new', array('original_block_id' => $block->getId(), 'store_id' => $storeId)) .'\')',
                     'class'     => 'add',
                 ));
