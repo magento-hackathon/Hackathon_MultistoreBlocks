@@ -23,10 +23,17 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit extends Mage_Adm
         $this->_objectId = 'block_id';
         $this->_controller = 'cms_block';
 
+        /* For edit screen */
+        $blockId = $this->getRequest()->getParam('block_id');
+
         parent::__construct();
 
         $this->_updateButton('save', 'label', Mage::helper('cms')->__('Save Block'));
-        $this->_updateButton('delete', 'label', Mage::helper('cms')->__('Delete Block'));
+        if($blockId) {
+            $this->_updateButton('delete', 'label', Mage::helper('cms')->__('Delete All Blocks'));
+            $deleteAllBlocksUrl = Mage::helper('adminhtml')->getUrl('*/*/delete', array('allblocks' => true, 'block_id' => $blockId));
+            $this->_updateButton('delete', 'onclick', "deleteConfirm('" . $this->__('Are you sure you want do this?') . "', '" . $deleteAllBlocksUrl . "')");
+        }
 
         $this->_addButton('saveandcontinue', array(
             'label'     => Mage::helper('adminhtml')->__('Save and Continue Edit'),
@@ -34,8 +41,6 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit extends Mage_Adm
             'class'     => 'save',
         ), -100);
 
-        /* For edit screen */
-        $blockId = $this->getRequest()->getParam('block_id');
         if($blockId) {
             $storeIds = array();
             $block = Mage::registry('cms_block');

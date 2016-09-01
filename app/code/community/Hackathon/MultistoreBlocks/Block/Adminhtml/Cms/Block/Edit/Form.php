@@ -160,6 +160,11 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form
             'config'    => Mage::getSingleton('cms/wysiwyg_config')->getConfig(),
             'value'     => $block->getContent(),
         ));
+
+        $deleteBlockUrl = Mage::helper('adminhtml')->getUrl('*/*/delete', array('block_id' => $block_id));
+        $fieldset->addField('delete_button_' . $block_id, 'note', array(
+            'text' => '<button id="delete_button_' . $block_id . '" title="' . $this->__('Delete Block') . '" type="button" class="scalable delete" onclick="deleteConfirm(\'' . $this->__('Are you sure you want do this?') . '\', \'' . $deleteBlockUrl . '\')" style=""><span><span><span>Blok verwijderen</span></span></span></button>'
+        ));
     }
 
     protected function getStoreNames($store_ids)

@@ -128,6 +128,10 @@ class Hackathon_MultistoreBlocks_Model_Observer
             return;
         }
 
+        if(!Mage::app()->getRequest()->getParam('allblocks')) {
+            return;
+        }
+
         Mage::register('hackathon_multistoreblocks_delete_blocks', true);
         $block = $observer->getEvent()->getDataObject();
 
