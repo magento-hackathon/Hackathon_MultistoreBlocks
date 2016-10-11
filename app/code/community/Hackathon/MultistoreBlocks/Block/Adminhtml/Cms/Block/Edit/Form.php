@@ -161,10 +161,15 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form
             'value'     => $block->getContent(),
         ));
 
-        $deleteBlockUrl = Mage::helper('adminhtml')->getUrl('*/*/delete', array('block_id' => $block_id));
-        $fieldset->addField('delete_button_' . $block_id, 'note', array(
-            'text' => '<button id="delete_button_' . $block_id . '" title="' . $this->__('Delete Block') . '" type="button" class="scalable delete" onclick="deleteConfirm(\'' . $this->__('Are you sure you want do this?') . '\', \'' . $deleteBlockUrl . '\')" style=""><span><span><span>Blok verwijderen</span></span></span></button>'
+        $deleteActionUrl = Mage::helper("adminhtml")->getUrl('*/multistoreblocks/delete/block_id/'.$block_id);
+        $fieldset->addField('multistore_delete['.$block_id.']', 'button', array(
+            'title'     => Mage::helper('cms')->__('Delete this block?'),
+            'name'      => 'multistore_delete['.$block_id.']',
+            'value'     => 'Delete this block?',
+            'class'     => 'form-button',
+            'onclick'   => 'deleteConfirm(\'Are you sure you want to do this?\', \''. $deleteActionUrl .' \')'
         ));
+
     }
 
     protected function getStoreNames($store_ids)
