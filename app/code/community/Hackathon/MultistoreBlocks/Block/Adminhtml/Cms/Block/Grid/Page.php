@@ -1,7 +1,9 @@
 <?php
 
-if(Mage::helper('core')->isModuleEnabled('Aitoc_Aitpermissions')) {
+if (Mage::helper('core')->isModuleEnabled('Aitoc_Aitpermissions')) {
     class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Grid_Page_Abstract extends Aitoc_Aitpermissions_Block_Rewrite_AdminCmsPageGrid {};
+} else if (Mage::helper('core')->isModuleEnabled('Magmodules_Alternatelang')) {
+    class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Grid_Page_Abstract extends Magmodules_Alternatelang_Block_Adminhtml_Cms_Page_Grid {};
 } else {
     class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Grid_Page_Abstract extends Mage_Adminhtml_Block_Cms_Page_Grid {};
 }
