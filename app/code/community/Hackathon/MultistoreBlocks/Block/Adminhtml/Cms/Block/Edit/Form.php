@@ -161,7 +161,10 @@ class Hackathon_MultistoreBlocks_Block_Adminhtml_Cms_Block_Edit_Form
             'value'     => $block->getContent(),
         ));
 
-        $deleteActionUrl = Mage::helper("adminhtml")->getUrl('*/multistoreblocks/delete/block_id/'.$block_id);
+        $deleteActionUrl = Mage::helper("adminhtml")->getUrl(
+            '*/multistoreblocks/delete/block_id/' . $block_id,
+            [Mage_Core_Controller_Varien_Action::PARAM_NAME_URL_ENCODED =>  Mage::helper('core/url')->getEncodedUrl()]
+        );
         $fieldset->addField('multistore_delete['.$block_id.']', 'button', array(
             'title'     => Mage::helper('cms')->__('Delete this block?'),
             'name'      => 'multistore_delete['.$block_id.']',
