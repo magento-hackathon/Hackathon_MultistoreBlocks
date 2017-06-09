@@ -44,4 +44,33 @@ class Hackathon_MultistoreBlocks_Model_Cms_Resource_Block_Collection
         return $select;
     }
 
+    /**
+     * To Option Array with store names
+     * 
+     * @param string $valueField
+     * @param string $labelField
+     * @param array $additional
+     * @return array
+     */
+    protected function _toOptionArray($valueField='id', $labelField='name', $additional=array())
+    {
+        $res = array();
+        $additional['value'] = $valueField;
+        $additional['label'] = $labelField;
+
+        foreach ($this as $item) {
+            foreach ($additional as $code => $field) {
+                $data[$code] = $item->getData($field);
+                /* Addition to add store names in dropdowns in the backend */
+                if ($field == $labelField) {
+                    if ($item->getStoreNames()) {
+                        $data[$code] .= ' (' . $item->getStoreNames() . ')';
+                    }
+                }
+            }
+            $res[] = $data;
+        }
+        return $res;
+    }
+
 }
