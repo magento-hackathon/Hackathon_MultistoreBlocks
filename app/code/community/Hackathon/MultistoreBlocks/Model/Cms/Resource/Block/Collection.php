@@ -70,6 +70,15 @@ class Hackathon_MultistoreBlocks_Model_Cms_Resource_Block_Collection
             }
             $res[] = $data;
         }
+
+        /* Sort alphabetical by label */
+        usort($res, function($a, $b) {
+            if ($a['label'] == $b['label']) {
+                return 0;
+            }
+            return ($a['label'] < $b['label']) ? -1 : 1;
+        });
+
         return $res;
     }
 
